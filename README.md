@@ -1,18 +1,14 @@
 # Puppet Samba Module
 
-Module for provisioning Samba
+Module for provisioning Samba, Modified with additional features and foreman compatibility by Naturalis.
 
-Tested on Ubuntu 12.04, CentOS 6.3, patches to support other operating systems are welcome.
+Tested on Ubuntu 12.04, CentOS 6.3. 
 
 ## Installation
 
 Clone this repo to your Puppet modules directory
 
-    git clone git://github.com/ajjahn/puppet-samba.git samba
-
-or
-
-    puppet module install ajjahn/samba
+    git clone git://github.com/naturalis/puppet-samba.git samba
 
 ## Usage
 

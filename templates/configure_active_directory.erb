@@ -114,9 +114,11 @@ if [ "$action" = "join" ]; then
     logger -st $PROG "Joining AD domain" >&2
     $NET ads $action -U "${winbind_acct}%${password}"
     status=$?
-    if [ status -ne 0 ]; then success="false"
+    if [ $status -ne 0 ]; then
+    	success="false"
+    fi
 
-if [ $success = "false" ]; then
+if [ "$success" = "false" ]; then
   echo ERROR: failed to join domain >&2
   exit 2
 fi
@@ -126,10 +128,11 @@ for attempt in $(seq 1 $max_attempts); do
     echo "$attempt of $max_attempts:"
     ad_settle
     echo "Getting TGT for ${winbind_acct}@${my_realm}" >&2
-    $EXPECT -c spawn -noecho kinit -c $KRB5CCNAME '${winbind_acct}@${my_realm};
+    $EXPECT -c "spawn -noecho kinit -c $KRB5CCNAME ${winbind_acct}@${my_realm};
         expect :;
-        send ${password}\n;
-        expect eof'
+        send {${password}};
+        send \n;
+        expect eof"
     klist -c $KRB5CCNAME &> /dev/null && break
 done
 
