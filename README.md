@@ -21,6 +21,7 @@ Wait some time and try again, the problem should dissapear.
 
 Adjust the defaults in init.pp or override them using puppet or The Foreman
 
+```
   $workgroup         = 'DOMAIN',
   $server_string     = 'Example Samba Server',
   $interfaces        = 'eth0 lo',
@@ -38,6 +39,7 @@ Adjust the defaults in init.pp or override them using puppet or The Foreman
   $winbindaccount    = 'DomainAdmin',
   $winbindpassword   = 'DomainAdminPass',
   $winbindrealm      = 'DOMAIN.LOCAL',
+```
 
 ## Result
 
