@@ -41,7 +41,7 @@ class samba (
       winbind_pass    => $winbindpassword,
       realm           => $winbindrealm,
       nsswitch        => $nsswitch,
-      target_ou       => $targetOU
+      target_ou       => $target_ou
     }
   }
 }

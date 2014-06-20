@@ -2,83 +2,49 @@
 
 Module for provisioning Samba, Modified with additional features and foreman compatibility by Naturalis.
 
-Tested on Ubuntu 12.04, CentOS 6.3. 
+Tested on Ubuntu 12.04
 
 ## Installation
 
-Clone this repo to your Puppet modules directory
-
+Clone this repo to your Puppet modules directory or into the foreman environment
     git clone git://github.com/naturalis/puppet-samba.git samba
+
+Make sure the $path exists and has 777 permissions. ( /data/test in this example )
+
+The fileserver name that will be added to the active directory is named after the hostname of the system. Make sure the hostname does not exceed 15 characters, the script will fail if it is longer. 
+
+Depending on replication time of domain controllers it may take some time before the checks in the scripts are working fine.
+wbinfo -u will give an empty result and the configure_active_directory script returns : ERROR: return user list from AD is empty
+Wait some time and try again, the problem should dissapear. 
 
 ## Usage
 
-Tweak and add the following to your site manifest:
+Adjust the defaults in init.pp or override them using puppet or The Foreman
 
-    node 'server.example.com' {
-      class {'samba::server':
-        workgroup => 'example',
-        server_string => "Example Samba Server",
-        interfaces => "eth0 lo",
-        security => 'share'
-      }
+  $workgroup         = 'DOMAIN',
+  $server_string     = 'Example Samba Server',
+  $interfaces        = 'eth0 lo',
+  $security          = 'ads',
+  $sharename         = 'samba-share',
+  $sharecomment      = 'testshare',
+  $path              = '/data/test',
+  $browsable         = true,
+  $writable          = true,
+  $create_mask       = 0770,
+  $directory_mask    = 0770,
+  $valid_users       = '@DOMAIN\"Domain Admins"',
+  $nsswitch          = true,
+  $target_ou         = "Computers",
+  $winbindaccount    = 'DomainAdmin',
+  $winbindpassword   = 'DomainAdminPass',
+  $winbindrealm      = 'DOMAIN.LOCAL',
 
-      samba::server::share {'example-share':
-        comment => 'Example Share',
-        path => '/path/to/share',
-        guest_only => true,
-        guest_ok => true,
-        guest_account => "guest",
-        browsable => false,
-        create_mask => 0777,
-        force_create_mask => 0777,
-        directory_mask => 0777,
-        force_directory_mask => 0777,
-        force_group => 'group',
-        force_user => 'user',
-        copy => 'some-other-share',
-      }
-    }
+## Result
 
-If you want join Samba server to Active Directory. Tested on Ubuntu 12.04.
-
-    node 'server.example.com' {
-      class {'samba::server':
-        workgroup => 'example',
-        server_string => "Example Samba Server",
-        interfaces => "eth0 lo",
-        security => 'ads'
-      }
-
-      samba::server::share {'ri-storage':
-        comment           => 'RBTH User Storage',
-        path              => "$smb_share",
-        browsable         => true,
-        writable          => true,
-        create_mask       => 0770,
-        directory_mask    => 0770,
-      }
-
-      class { 'samba::server::ads':
-         winbind_acct    => $::domain_admin,
-         winbind_pass    => $::admin_password,
-         realm           => 'EXAMPLE.COM',
-         nsswitch        => true,
-         target_ou       => "Nix_Mashine"
-      }
-    }
-
-Most configuration options are optional.
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Working samba file server with Active Directory integration. 
 
 ## License
 
-This module is released under the MIT license:
+This module is released under the MIT license  [http://www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
 
-* [http://www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
+
