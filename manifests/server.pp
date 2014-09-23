@@ -10,8 +10,8 @@ class samba::server($interfaces = '',
                     $printing = '',
                     $printcap_name = '',
                     $disable_spoolss = '',
-                    $bind_interfaces_only = 'yes',) {
-
+                    $bind_interfaces_only = 'yes',
+                    $vfs_objects = 'acl_xattr') {
   include samba::server::install
   include samba::server::config
   include samba::server::service
@@ -43,6 +43,7 @@ class samba::server($interfaces = '',
     'printing':             value => $printing;
     'printcap_name':        value => $printcap_name;
     'disable_spoolss':      value => $disable_spoolss;
+    'vfs objects':          value => $vfs_objects;
   }
 
   file {'check_samba_user':
