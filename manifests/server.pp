@@ -39,10 +39,10 @@ class samba::server($interfaces = '',
     'socket_options':       value => $socket_options;
     'deadtime':             value => $deadtime;
     'keepalive':            value => $keepalive;
-    'load_printers':        value => $load_printers;
+    'load printers':        value => $load_printers;
     'printing':             value => $printing;
-    'printcap_name':        value => $printcap_name;
-    'disable_spoolss':      value => $disable_spoolss;
+    'printcap name':        value => $printcap_name;
+    'disable spoolss':      value => $disable_spoolss;
     'vfs objects':          value => $vfs_objects;
   }
 
